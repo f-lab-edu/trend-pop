@@ -1,4 +1,4 @@
-package com.trendpop.sequrity.jwt;
+package com.trendpop.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,11 +32,13 @@ public class JwtUtil {
     }
 
     public String createToken(Map<String, Object> claims, String subject) {
+        Instant now = Instant.now();
+
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60))
+                .setIssuedAt(Date.from(now))
+                .setExpiration(Date.from(now.plus(1, ChronoUnit.MINUTES)))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

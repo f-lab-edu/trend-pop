@@ -1,6 +1,6 @@
 package com.trendpop.config;
 
-import com.trendpop.sequrity.jwt.JwtInterceptor;
+import com.trendpop.security.jwt.JwtInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -16,6 +16,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/api/user/login", "/api/user/signup");
+                .excludePathPatterns("/api/user/login", "/api/user/signup", "/api/home/**");
     }
 }

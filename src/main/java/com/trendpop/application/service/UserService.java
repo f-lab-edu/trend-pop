@@ -6,11 +6,8 @@ import com.trendpop.exception.UserNotFoundException;
 import com.trendpop.infrastructure.mapper.UserMapper;
 import com.trendpop.presentation.dto.request.UserRequest;
 import com.trendpop.presentation.dto.response.UserResponse;
-import com.trendpop.sequrity.encryption.PasswordEncryptor;
-import com.trendpop.sequrity.jwt.JwtUtil;
-import org.mindrot.jbcrypt.BCrypt;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.trendpop.domain.model.encryption.PasswordEncryptor;
+import com.trendpop.security.jwt.JwtUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,7 +41,7 @@ public class UserService {
         return UserResponse.from(foundUser);
     }
 
-    public String authenticate(UserRequest userRequest) {
+    public String login(UserRequest userRequest) {
         User user = userMapper.find(userRequest.toDomain().id());
 
         if (user == null) {
