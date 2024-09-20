@@ -1,8 +1,8 @@
 package com.trendpop.domain.model;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
-public record Store(String storeId, String storeName, String description, LocalDate startAt, LocalDate endAt,
-                    String storeTypeId, String storeTypeName, String locationId, String locationName,
-                    String imageUrl) {
+public record Store(String id, String name, String description, String type, String locationId, LocalDate startAt, LocalDate endAt
+                    , LocalTime openTime, LocalTime closeTime, int price, boolean reserveClosed) {
 }

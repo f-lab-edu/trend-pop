@@ -1,7 +1,9 @@
 package com.trendpop.presentation.controller;
 
 import com.trendpop.application.service.HomeService;
+import com.trendpop.presentation.dto.response.ReservationCountResponse;
 import com.trendpop.presentation.dto.response.StoreResponse;
+import com.trendpop.presentation.dto.response.StoreViewHistoryResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,12 +26,12 @@ public class HomeController {
     }
 
     @GetMapping("/most-popular-stores")
-    public List<StoreResponse> getMostPopularStores() {
+    public List<ReservationCountResponse> getMostPopularStores() {
         return homeService.getMostPopularStores();
     }
 
     @GetMapping("/recently-viewed-stores/{id}")
-    public List<StoreResponse> getRecentlyViewedStores(@PathVariable("id") String id) {
+    public List<StoreViewHistoryResponse> getRecentlyViewedStores(@PathVariable("id") String id) {
         return homeService.getRecentlyViewedStores(id);
     }
 }

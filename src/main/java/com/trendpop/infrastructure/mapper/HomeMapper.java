@@ -1,12 +1,12 @@
 package com.trendpop.infrastructure.mapper;
 
-import com.trendpop.domain.model.Store;
+import com.trendpop.domain.model.Stores;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 @Mapper
-public interface HomeMapper {
+public interface HomeMapper { // HomeMapper 삭제 예정.
 
     @Select("""
             SELECT s.id AS store_id, s.name AS store_name, s.description, s.start_at, s.end_at,
@@ -30,7 +30,7 @@ public interface HomeMapper {
             AND s.deleted = FALSE
             ORDER BY rs.priority
             """)
-    List<Store> findRecommendedStores();
+    List<Stores> findRecommendedStores();
 
     @Select("""
             SELECT s.id AS store_id, s.name AS store_name, s.description, s.start_at, s.end_at,
@@ -60,7 +60,7 @@ public interface HomeMapper {
             ORDER BY r_cnt DESC
             LIMIT 10
             """)
-    List<Store> findMostPopularStores();
+    List<Stores> findMostPopularStores();
 
     @Select("""
             SELECT s.id AS store_id, s.name AS store_name, s.description, s.start_at, s.end_at,
@@ -89,5 +89,5 @@ public interface HomeMapper {
             ORDER BY sv.viewed_at DESC
             LIMIT 10
             """)
-    List<Store> findRecentlyViewedStores(String id);
+    List<Stores> findRecentlyViewedStores(String id);
 }
