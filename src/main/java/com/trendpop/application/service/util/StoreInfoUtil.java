@@ -27,14 +27,15 @@ public class StoreInfoUtil {
     }
 
     public StoreInfo getStoreInfo(List<String> storeIds) {
-        List<Store> stores = storeMapper.findStoresByIds(storeIds);
+        List<Store> stores = storeMapper.findNonDeletedStoresByIds(storeIds);
         List<String> storeTypeIds = stores.stream().map(Store::type).distinct().collect(Collectors.toList());
         List<StoreType> storeTypes = storeTypeMapper.findStoreTypesByIds(storeTypeIds);
 
         List<String> locationIds = stores.stream().map(Store::locationId).distinct().collect(Collectors.toList());
         List<Location> locations = locationMapper.findLocationsByIds(locationIds);
 
-        List<StorePhoto> mainStorePhotos = storePhotoMapper.findMainStorePhotosByIds(storeIds);
+        List<StorePhotoMinOrder> minOrders = storePhotoMapper.findMinOrderForStoreIds(storeIds);
+        List<StorePhoto> mainStorePhotos = storePhotoMapper.findStorePhotosByStoreIdAndOrder(minOrders);
 
         return new StoreInfo(stores, storeTypes, locations, mainStorePhotos);
     }

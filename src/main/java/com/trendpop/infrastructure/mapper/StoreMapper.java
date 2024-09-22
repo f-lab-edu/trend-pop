@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface StoreMapper {
     @Select("SELECT store_id FROM recommended_stores WHERE is_active = TRUE ORDER BY priority")
-    List<String> findRecommendedStoreIds();
+    List<String> findActiveRecommendedStoreIdsOrderByPriority();
 
     @Select("<script>" +
             "SELECT * FROM stores WHERE id IN " +
@@ -18,5 +18,5 @@ public interface StoreMapper {
             "</foreach> " +
             "AND deleted = FALSE" +
             "</script>")
-    List<Store> findStoresByIds(@Param("storeIds") List<String> storeIds);
+    List<Store> findNonDeletedStoresByIds(@Param("storeIds") List<String> storeIds);
 }

@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 @Mapper
-public interface HomeMapper { // HomeMapper 삭제 예정.
+public interface HomeMapper { // TODO(@jiyoonkong): HomeMapper 삭제 예정. Due Date: 2024.09.29)
 
     @Select("""
             SELECT s.id AS store_id, s.name AS store_name, s.description, s.start_at, s.end_at,
