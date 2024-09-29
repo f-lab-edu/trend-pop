@@ -1,7 +1,7 @@
 package com.trendpop.presentation.controller;
 
 import com.trendpop.application.service.ReservationService;
-import com.trendpop.presentation.dto.response.ReservationCountResponse;
+import com.trendpop.presentation.dto.response.StoreResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +19,7 @@ public class ReservationController {
     }
 
     @GetMapping("/most-popular")
-    public List<ReservationCountResponse> getMostPopularStores() {
+    public List<StoreResponse> getMostPopularStores() {
         return reservationService.getMostPopularStores();
     }
 }

@@ -2,7 +2,6 @@ package com.trendpop.presentation.controller;
 
 import com.trendpop.application.service.StoreService;
 import com.trendpop.presentation.dto.response.StoreResponse;
-import com.trendpop.presentation.dto.response.StoreViewHistoryResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +25,7 @@ public class StoreController {
     }
 
     @GetMapping("/recently-viewed/{id}")
-    public List<StoreViewHistoryResponse> getRecentlyViewedStores(@PathVariable("id") String id) {
+    public List<StoreResponse> getRecentlyViewedStores(@PathVariable("id") String id) {
         return storeService.getRecentlyViewedStores(id);
     }
 }

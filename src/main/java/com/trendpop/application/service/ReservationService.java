@@ -1,14 +1,12 @@
 package com.trendpop.application.service;
 
-import com.trendpop.application.service.util.StoreInfoUtil;
-import com.trendpop.domain.model.StoreInfo;
-import com.trendpop.domain.model.StoreReservationCount;
-import com.trendpop.exception.UninitializedException;
+import com.trendpop.infrastructure.mapper.LocationMapper;
 import com.trendpop.infrastructure.mapper.ReservationMapper;
-import com.trendpop.presentation.dto.response.ReservationCountResponse;
+import com.trendpop.infrastructure.mapper.StoreMapper;
+import com.trendpop.infrastructure.mapper.StorePhotoMapper;
+import com.trendpop.presentation.dto.response.StoreResponse;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,27 +14,18 @@ import java.util.stream.Collectors;
 public class ReservationService {
 
     private final ReservationMapper reservationMapper;
-    private final StoreInfoUtil storeInfoUtil;
+    private final StoreService storeService;
 
-    public ReservationService(ReservationMapper reservationMapper, StoreInfoUtil storeInfoUtil) {
+    public ReservationService(ReservationMapper reservationMapper,StoreService storeService) {
         this.reservationMapper = reservationMapper;
-        this.storeInfoUtil = storeInfoUtil;
+        this.storeService = storeService;
     }
 
-    public List<ReservationCountResponse> getMostPopularStores() {
-        List<StoreReservationCount> top10StoreReservationCounts = reservationMapper.findTop10ActiveStoreReservationCounts();
-        List<String> top10StoreIds = top10StoreReservationCounts.stream()
-                .map(StoreReservationCount::storeId).toList();
-        StoreInfo storeInfo = storeInfoUtil.getStoreInfo(top10StoreIds);
+    public List<StoreResponse> getMostPopularStores() {
+        List<String> top10StoreIds = reservationMapper.findTop10ActiveStoreIdsOrderByReservationCounts();
 
-        return top10StoreReservationCounts.stream()
-                .map(reservationCount -> {
-                    var store = storeInfo.stores().stream()
-                            .filter(s -> s.id().equals(reservationCount.storeId()))
-                            .findFirst().orElseThrow(() -> new UninitializedException("STORE"));
-                    return ReservationCountResponse.from(store, storeInfoUtil.mapToStoreResponse(store, storeInfo), reservationCount);
-                })
-                .sorted(Comparator.comparingInt(ReservationCountResponse::reservationCount).reversed())
+        return top10StoreIds.stream()
+                .map(storeService::createStoreResponse)
                 .collect(Collectors.toList());
     }
 }
