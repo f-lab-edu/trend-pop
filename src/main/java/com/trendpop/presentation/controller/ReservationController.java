@@ -18,7 +18,7 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    @GetMapping("/most-popular")
+    @GetMapping("/most-popular-stores")
     public List<StoreResponse> getMostPopularStores() {
         return reservationService.getMostPopularStores();
     }

@@ -7,6 +7,6 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface LocationMapper {
 
-    @Select("SELECT * FROM locations WHERE id = #{locationId}")
+    @Select("SELECT * FROM locations WHERE id = #{locationId} AND deleted = FALSE")
     Location findLocationById(String locationId);
 }

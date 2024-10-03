@@ -11,5 +11,5 @@ public interface ReservationMapper {
             SELECT store_id FROM reservations WHERE deleted = FALSE AND status != 'CANCELLED'
             GROUP BY store_id ORDER BY COUNT(id) DESC LIMIT 10
             """)
-    List<String> findTop10ActiveStoreIdsOrderByReservationCounts();
+    List<String> findTop10StoreIdsOrderByReservationCounts();
 }

@@ -1,16 +1,20 @@
 package com.trendpop.application.service;
 
-import com.trendpop.domain.model.*;
+import com.trendpop.domain.model.Location;
+import com.trendpop.domain.model.Store;
+import com.trendpop.domain.model.StoreViewHistory;
 import com.trendpop.infrastructure.mapper.LocationMapper;
 import com.trendpop.infrastructure.mapper.StoreMapper;
 import com.trendpop.infrastructure.mapper.StorePhotoMapper;
 import com.trendpop.infrastructure.mapper.StoreViewHistoryMapper;
 import com.trendpop.presentation.dto.response.StoreResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class StoreService {
 
     private final StoreMapper storeMapper;
@@ -18,28 +22,21 @@ public class StoreService {
     private final LocationMapper locationMapper;
     private final StoreViewHistoryMapper storeViewHistoryMapper;
 
-    public StoreService(StoreMapper storeMapper, StorePhotoMapper storePhotoMapper, LocationMapper locationMapper, StoreViewHistoryMapper storeViewHistoryMapper) {
-        this.storeMapper = storeMapper;
-        this.storePhotoMapper = storePhotoMapper;
-        this.locationMapper = locationMapper;
-        this.storeViewHistoryMapper = storeViewHistoryMapper;
-    }
-
     StoreResponse createStoreResponse(String storeId) {
-        Integer minOrder = storePhotoMapper.findMinOrderByStoreIdNonDeleted(storeId);
+        Integer minOrder = storePhotoMapper.findMinOrderByStoreId(storeId);
 
         String imageUrl = (minOrder != null)
-                ? storePhotoMapper.findImageUrlByStoreIdAndOrder(storeId, minOrder)
+                ? storePhotoMapper.findImageUrlByStoreIdAndOrder(storeId, minOrder).imageUrl()
                 : null;
 
-        Store store = storeMapper.findNonDeletedStoreById(storeId);
+        Store store = storeMapper.findStoreById(storeId);
 
         Location location = locationMapper.findLocationById(store.locationId());
 
         return StoreResponse.from(store, location, imageUrl);
     }
     public List<StoreResponse> getRecommendedStores() {
-        List<String> storeIds = storeMapper.findActiveRecommendedStoreIdsOrderByPriority();
+        List<String> storeIds = storeMapper.findRecommendedStoreIdsOrderByPriority();
 
         return storeIds.stream()
                 .map(this::createStoreResponse)
