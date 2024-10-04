@@ -1,4 +1,4 @@
-package com.trendpop.sequrity.encryption;
+package com.trendpop.domain.model.encryption;
 
 import org.mindrot.jbcrypt.BCrypt;
 

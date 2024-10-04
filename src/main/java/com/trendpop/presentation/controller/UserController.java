@@ -3,7 +3,6 @@ package com.trendpop.presentation.controller;
 import com.trendpop.application.service.UserService;
 import com.trendpop.presentation.dto.request.UserRequest;
 import com.trendpop.presentation.dto.response.UserResponse;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +32,6 @@ public class UserController {
 
     @PostMapping("/login")
     public String createAuthenticationToken(@RequestBody UserRequest userRequest) throws Exception {
-        return userService.authenticate(userRequest);
+        return userService.login(userRequest);
     }
 }
