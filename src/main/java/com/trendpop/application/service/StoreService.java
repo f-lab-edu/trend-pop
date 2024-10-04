@@ -1,12 +1,7 @@
 package com.trendpop.application.service;
 
-import com.trendpop.domain.model.Location;
-import com.trendpop.domain.model.Store;
-import com.trendpop.domain.model.StoreViewHistory;
-import com.trendpop.infrastructure.mapper.LocationMapper;
-import com.trendpop.infrastructure.mapper.StoreMapper;
-import com.trendpop.infrastructure.mapper.StorePhotoMapper;
-import com.trendpop.infrastructure.mapper.StoreViewHistoryMapper;
+import com.trendpop.domain.model.*;
+import com.trendpop.infrastructure.mapper.*;
 import com.trendpop.presentation.dto.response.StoreResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,12 +16,13 @@ public class StoreService {
     private final StorePhotoMapper storePhotoMapper;
     private final LocationMapper locationMapper;
     private final StoreViewHistoryMapper storeViewHistoryMapper;
+    private final RecommendedStoreMapper recommendedStoreMapper;
 
     StoreResponse createStoreResponse(String storeId) {
-        Integer minOrder = storePhotoMapper.findMinOrderByStoreId(storeId);
+        StorePhoto storePhoto = storePhotoMapper.findMinOrderByStoreId(storeId);
 
-        String imageUrl = (minOrder != null)
-                ? storePhotoMapper.findImageUrlByStoreIdAndOrder(storeId, minOrder).imageUrl()
+        String imageUrl = (storePhoto != null)
+                ? storePhotoMapper.findImageUrlByStoreIdAndOrder(storeId, storePhoto.order()).imageUrl()
                 : null;
 
         Store store = storeMapper.findStoreById(storeId);
@@ -36,7 +32,8 @@ public class StoreService {
         return StoreResponse.from(store, location, imageUrl);
     }
     public List<StoreResponse> getRecommendedStores() {
-        List<String> storeIds = storeMapper.findRecommendedStoreIdsOrderByPriority();
+        List<RecommendedStore> recommendedStores = recommendedStoreMapper.findRecommendedStoreIdsOrderByPriority();
+        List<String> storeIds = recommendedStores.stream().map(RecommendedStore::storeId).toList();
 
         return storeIds.stream()
                 .map(this::createStoreResponse)
