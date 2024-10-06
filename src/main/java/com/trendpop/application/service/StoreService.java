@@ -2,6 +2,7 @@ package com.trendpop.application.service;
 
 import com.trendpop.domain.model.*;
 import com.trendpop.infrastructure.mapper.*;
+import com.trendpop.presentation.dto.response.StoreDetailResponse;
 import com.trendpop.presentation.dto.response.StoreResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -47,5 +48,10 @@ public class StoreService {
         return storeIds.stream()
                 .map(this::createStoreResponse)
                 .collect(Collectors.toList());
+    }
+
+    public StoreDetailResponse getStoreInfo(String id) {
+        Store store = storeMapper.findStoreById(id);
+        return StoreDetailResponse.from(store);
     }
 }
