@@ -8,6 +8,6 @@ import java.util.List;
 
 @Mapper
 public interface StoreMapper {
-    @Select("SELECT * FROM stores WHERE id = #{storeId} AND deleted = FALSE")
+    @Select("SELECT * FROM stores WHERE id = #{storeId}")
     Store findStoreById(String storeId);
 }

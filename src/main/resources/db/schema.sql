@@ -9,7 +9,6 @@ CREATE TABLE users (
         phone_number VARCHAR(20),
         oauth_provider_type VARCHAR(100),
         oauth_provider_id VARCHAR(255),
-        deleted BOOLEAN DEFAULT FALSE,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -18,7 +17,6 @@ CREATE TABLE locations (
     id VARCHAR(255) PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     parent_id VARCHAR(255),
-    deleted BOOLEAN DEFAULT FALSE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (parent_id) REFERENCES locations(id)
@@ -36,7 +34,6 @@ CREATE TABLE stores (
     close_time TIME,
     price INT,
     reserve_closed BOOLEAN DEFAULT FALSE,
-    deleted BOOLEAN DEFAULT FALSE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     location_detail VARCHAR(255),
@@ -49,7 +46,6 @@ CREATE TABLE recommended_stores (
     priority INT DEFAULT 1,
     image_url VARCHAR(255),
     recommended_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    deleted BOOLEAN DEFAULT FALSE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (store_id) REFERENCES stores(id)
@@ -58,7 +54,6 @@ CREATE TABLE recommended_stores (
 CREATE TABLE reservation_status_codes (
     code VARCHAR(255) PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    deleted BOOLEAN DEFAULT FALSE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -71,7 +66,6 @@ CREATE TABLE reservations (
     visit_time TIME,
     guest_count INT,
     status VARCHAR(255),
-    deleted BOOLEAN DEFAULT FALSE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
@@ -93,7 +87,6 @@ CREATE TABLE store_photos (
     store_id VARCHAR(255),
     image_url VARCHAR(255) NOT NULL,
     `order` INT NOT NULL,
-    deleted BOOLEAN DEFAULT FALSE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (store_id) REFERENCES stores(id)
