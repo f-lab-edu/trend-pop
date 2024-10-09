@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserMapper {
 
-    @Select("SELECT * FROM users WHERE id = #{id} AND deleted = FALSE")
+    @Select("SELECT * FROM users WHERE id = #{id}")
     User findUserById(String id);
 
     @Insert("INSERT INTO users (id, email, password, name) values (#{id}, #{email}, #{password}, #{name})")
