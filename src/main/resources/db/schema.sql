@@ -59,7 +59,7 @@ CREATE TABLE reservation_status_codes (
 );
 
 CREATE TABLE reservations (
-    id VARCHAR(255) PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id VARCHAR(255),
     store_id VARCHAR(255),
     visit_at DATE,
