@@ -1,6 +1,7 @@
 package com.trendpop.application.service;
 
 import com.trendpop.domain.model.Reservation;
+import com.trendpop.domain.model.ReservationStatus;
 import com.trendpop.infrastructure.mapper.LocationMapper;
 import com.trendpop.infrastructure.mapper.ReservationMapper;
 import com.trendpop.infrastructure.mapper.StoreMapper;
@@ -22,7 +23,7 @@ public class ReservationService {
     private final ReservationMapper reservationMapper;
     private final StoreService storeService;
 
-    public List<StoreResponse> getMostPopularStores() {
+    public List<StoreResponse> showMostPopularStores() {
         List<String> top10StoreIds = reservationMapper.findTop10StoreIdsOrderByReservationCounts();
 
         return top10StoreIds.stream()
@@ -30,14 +31,14 @@ public class ReservationService {
                 .collect(Collectors.toList());
     }
 
-    public ReservationResponse createReservation(Reservation reservation) {
-        Reservation confirmedReservation = reservation.withStatus("CONFIRMED");
-        reservationMapper.createReservation(confirmedReservation);
+    public ReservationResponse reserve(Reservation reservation) {
+        Reservation confirmedReservation = reservation.withStatus(ReservationStatus.CONFIRMED);
+        reservationMapper.create(confirmedReservation);
         return ReservationResponse.from(confirmedReservation);
     }
 
-    public List<ReservationResponse> getReservationsByUserId(String userId) {
-        List<Reservation> reservations = reservationMapper.findReservationsByUserId(userId);
+    public List<ReservationResponse> findReservationsByUserId(String userId) {
+        List<Reservation> reservations = reservationMapper.findByUserId(userId);
         return reservations.stream()
                 .map(ReservationResponse::from)
                 .collect(Collectors.toList());
@@ -45,34 +46,34 @@ public class ReservationService {
 
     @Transactional
     public ReservationResponse updateReservation(Reservation reservation) {
-        Reservation reservationInfo = reservationMapper.findReservationById(reservation.id());
-        Reservation updatedReservationInfo = new Reservation(
-                reservationInfo.id(),
-                reservationInfo.userId(),
-                reservationInfo.storeId(),
-                Optional.ofNullable(reservation.visitAt()).orElse(reservationInfo.visitAt()),
-                Optional.ofNullable(reservation.visitTime()).orElse(reservationInfo.visitTime()),
-                reservation.guestCount() != 0 ? reservation.guestCount() : reservationInfo.guestCount(),
-                reservationInfo.status()
+        Reservation reservationRequest = reservationMapper.findById(reservation.id());
+        Reservation updatedReservationRequest = new Reservation(
+                reservationRequest.id(),
+                reservationRequest.userId(),
+                reservationRequest.storeId(),
+                Optional.ofNullable(reservation.visitAt()).orElse(reservationRequest.visitAt()),
+                Optional.ofNullable(reservation.visitTime()).orElse(reservationRequest.visitTime()),
+                reservation.guestCount() != 0 ? reservation.guestCount() : reservationRequest.guestCount(),
+                reservationRequest.status()
         );
-        reservationMapper.updateReservationInfo(updatedReservationInfo);
-        Reservation updatedReservation = reservationMapper.findReservationById(reservation.id());
+        reservationMapper.update(updatedReservationRequest);
+        Reservation updatedReservation = reservationMapper.findById(reservation.id());
         return ReservationResponse.from(updatedReservation);
     }
 
     @Transactional
     public ReservationResponse updateReservationStatusVisited(Reservation reservation) {
-        Reservation visitedReservation = reservation.withStatus("VISITED");
-        reservationMapper.updateReservationStatus(visitedReservation);
-        Reservation updatedReservation = reservationMapper.findReservationById(reservation.id());
+        Reservation visitedReservation = reservation.withStatus(ReservationStatus.VISITED);
+        reservationMapper.updateStatus(visitedReservation);
+        Reservation updatedReservation = reservationMapper.findById(reservation.id());
         return ReservationResponse.from(updatedReservation);
     }
 
     @Transactional
     public ReservationResponse cancelReservation(Reservation reservation) {
-        Reservation cancelLeddReservation = reservation.withStatus("CANCELLED");
-        reservationMapper.updateReservationStatus(cancelLeddReservation);
-        Reservation updatedReservation = reservationMapper.findReservationById(reservation.id());
+        Reservation cancelLeddReservation = reservation.withStatus(ReservationStatus.CANCELLED);
+        reservationMapper.updateStatus(cancelLeddReservation);
+        Reservation updatedReservation = reservationMapper.findById(reservation.id());
         return ReservationResponse.from(updatedReservation);
     }
 }

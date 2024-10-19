@@ -19,21 +19,21 @@ public class ReservationController {
     }
 
     @GetMapping("/most-popular-stores")
-    public List<StoreResponse> getMostPopularStores() {
-        return reservationService.getMostPopularStores();
+    public List<StoreResponse> showMostPopularStores() {
+        return reservationService.showMostPopularStores();
     }
 
-    @PostMapping("/create")
-    public ReservationResponse createReservation(@RequestBody ReservationRequest request) {
-        return reservationService.createReservation(request.toDomain());
+    @PostMapping
+    public ReservationResponse reserve(@RequestBody ReservationRequest request) {
+        return reservationService.reserve(request.toDomain());
     }
 
     @GetMapping("/{userId}")
-    public List<ReservationResponse> getReservationsByUserId(@PathVariable String userId) {
-        return reservationService.getReservationsByUserId(userId);
+    public List<ReservationResponse> findReservationsByUserId(@PathVariable String userId) {
+        return reservationService.findReservationsByUserId(userId);
     }
 
-    @PatchMapping("/update")
+    @PatchMapping
     public ReservationResponse updateReservation(@RequestBody ReservationRequest request) {
         return reservationService.updateReservation(request.toDomain());
     }

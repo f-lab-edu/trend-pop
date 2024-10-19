@@ -1,6 +1,7 @@
 package com.trendpop.presentation.dto.request;
 
 import com.trendpop.domain.model.Reservation;
+import com.trendpop.domain.model.ReservationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ public class ReservationRequest {
     private LocalDate visitAt;
     private LocalTime visitTime;
     private int guestCount;
-    private String status;
+    private ReservationStatus status;
 
     public Reservation toDomain() {
         return new Reservation(id, userId, storeId, visitAt, visitTime, guestCount, status);

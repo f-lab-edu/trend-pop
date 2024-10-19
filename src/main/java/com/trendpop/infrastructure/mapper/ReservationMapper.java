@@ -17,13 +17,13 @@ public interface ReservationMapper {
             INSERT INTO reservations (id, user_id, store_id, visit_at, visit_time, guest_count, status)
             VALUES (#{id}, #{userId}, #{storeId}, #{visitAt}, #{visitTime}, #{guestCount}, #{status})
             """)
-    int createReservation(Reservation reservation);
+    int create(Reservation reservation);
 
     @Select("SELECT * FROM reservations WHERE user_id = #{userId}")
-    List<Reservation> findReservationsByUserId(String userId);
+    List<Reservation> findByUserId(String userId);
 
     @Select("SELECT * FROM reservations WHERE id = #{id}")
-    Reservation findReservationById(long id);
+    Reservation findById(long id);
 
     @Update("""
             UPDATE reservations
@@ -33,7 +33,7 @@ public interface ReservationMapper {
               , updated_at = NOW()
             WHERE id = #{id}
             """)
-    int updateReservationInfo(Reservation reservation);
+    int update(Reservation reservation);
 
     @Update("""
             UPDATE reservations
@@ -41,6 +41,6 @@ public interface ReservationMapper {
               , updated_at = NOW()
             WHERE id = #{id}
             """)
-    int updateReservationStatus(Reservation reservation);
+    int updateStatus(Reservation reservation);
 
 }
