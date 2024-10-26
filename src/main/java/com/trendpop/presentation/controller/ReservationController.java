@@ -1,10 +1,10 @@
 package com.trendpop.presentation.controller;
 
 import com.trendpop.application.service.ReservationService;
+import com.trendpop.presentation.dto.request.ReservationRequest;
+import com.trendpop.presentation.dto.response.ReservationResponse;
 import com.trendpop.presentation.dto.response.StoreResponse;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,7 +19,27 @@ public class ReservationController {
     }
 
     @GetMapping("/most-popular-stores")
-    public List<StoreResponse> getMostPopularStores() {
-        return reservationService.getMostPopularStores();
+    public List<StoreResponse> showMostPopularStores() {
+        return reservationService.showMostPopularStores();
+    }
+
+    @PostMapping
+    public ReservationResponse reserve(@RequestBody ReservationRequest request) {
+        return reservationService.reserve(request.toDomain());
+    }
+
+    @GetMapping("/{userId}")
+    public List<ReservationResponse> findReservationsByUserId(@PathVariable String userId) {
+        return reservationService.findReservationsByUserId(userId);
+    }
+
+    @PatchMapping
+    public ReservationResponse updateReservation(@RequestBody ReservationRequest request) {
+        return reservationService.updateReservation(request.toDomain());
+    }
+
+    @PatchMapping("/cancel")
+    public ReservationResponse cancelReservation(@RequestBody ReservationRequest request) {
+        return reservationService.cancelReservation(request.toDomain());
     }
 }
