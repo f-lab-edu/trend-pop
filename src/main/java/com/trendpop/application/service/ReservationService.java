@@ -2,10 +2,7 @@ package com.trendpop.application.service;
 
 import com.trendpop.domain.model.Reservation;
 import com.trendpop.domain.model.ReservationStatus;
-import com.trendpop.infrastructure.mapper.LocationMapper;
 import com.trendpop.infrastructure.mapper.ReservationMapper;
-import com.trendpop.infrastructure.mapper.StoreMapper;
-import com.trendpop.infrastructure.mapper.StorePhotoMapper;
 import com.trendpop.presentation.dto.response.ReservationResponse;
 import com.trendpop.presentation.dto.response.StoreResponse;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +28,7 @@ public class ReservationService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public ReservationResponse reserve(Reservation reservation) {
         Reservation confirmedReservation = reservation.withStatus(ReservationStatus.CONFIRMED);
         reservationMapper.create(confirmedReservation);
@@ -57,14 +55,6 @@ public class ReservationService {
                 reservationRequest.status()
         );
         reservationMapper.update(updatedReservationRequest);
-        Reservation updatedReservation = reservationMapper.findById(reservation.id());
-        return ReservationResponse.from(updatedReservation);
-    }
-
-    @Transactional
-    public ReservationResponse updateReservationStatusVisited(Reservation reservation) {
-        Reservation visitedReservation = reservation.withStatus(ReservationStatus.VISITED);
-        reservationMapper.updateStatus(visitedReservation);
         Reservation updatedReservation = reservationMapper.findById(reservation.id());
         return ReservationResponse.from(updatedReservation);
     }

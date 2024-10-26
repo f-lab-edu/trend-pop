@@ -38,11 +38,6 @@ public class ReservationController {
         return reservationService.updateReservation(request.toDomain());
     }
 
-    @PatchMapping("/update-status-visited")
-    public ReservationResponse updateReservationStatusVisited(@RequestBody ReservationRequest request) {
-        return reservationService.updateReservationStatusVisited(request.toDomain());
-    }
-
     @PatchMapping("/cancel")
     public ReservationResponse cancelReservation(@RequestBody ReservationRequest request) {
         return reservationService.cancelReservation(request.toDomain());
